@@ -766,15 +766,7 @@ window.DFind    = Dom.find.bind(Dom)
 //  pour vous assurer que la librairie était fonctionnelle.)
 
 Dom.ctest = function(){
-  if ( 'undefined' == typeof LibTestor ) {
-    if ( 'undefined' == typeof DOM ) {
-      return console.error("Chargez la librairie dom.js pour pouvoir utiliser ce testeur.")
-    }
-    sessionStorage.setItem("LIST_TESTOR_LIBRARY_NAME", "DOM")
-    DCreate('SCRIPT', {in: document.head, src: "./assets/js/lib_testor.js"})
-    return
-  }
-  console.info("Début des tests")
+ 
   // Pour ne jouer que les tests qui sont "marqués" (c'est-à-dire qui
   // ont tested:true dans leurs options.)
   // only_tested()
