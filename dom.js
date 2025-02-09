@@ -766,6 +766,10 @@ window.DFind    = Dom.find.bind(Dom)
 //  pour vous assurer que la librairie était fonctionnelle.)
 
 Dom.ctest = function(){
+
+  if ( 'function' != typeof window.vide ) {
+    run_lib_testor()
+  }
  
   // Pour ne jouer que les tests qui sont "marqués" (c'est-à-dire qui
   // ont tested:true dans leurs options.)
@@ -1047,5 +1051,8 @@ Dom.ctest = function(){
   raise(DOM.contains.bind(DOM),[el, elin, {after: "un string"}], "Types incompatibles dans DOM.contains : 'DOMElement' et 'String'…")
   raise(DOM.contains.bind(DOM),[el, "string", {after: elin}], "Types incompatibles dans DOM.contains : 'String' et 'DOMElement'…")
   not_raise(DOM.contains.bind(DOM),[el, "string", {after: /reg/i}])
+
+  
+  stop_lib_testor()
 
 }
