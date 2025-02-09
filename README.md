@@ -22,3 +22,6 @@ Pour un usage local sans connexion, charger le fichier `dom.js` dans votre dossi
 * ajouter la ligne `import "./dom.js";` dans le fichier `./assets/js/app.js`,
 * that's it!
 
+## Test de la librairie
+
+Si vous utilisez LibTestor {Lien requis}, une fois la librairie chargée, vous pouvez jouer `Dom.ctest()` dans la console JavaScript de votre navigateur pour lancer les tests et vous assurer que tout passe.
