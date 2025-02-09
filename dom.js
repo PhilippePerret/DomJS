@@ -760,7 +760,6 @@ window.DGetAll  = Dom.getAll.bind(Dom)
  */
 window.DFind    = Dom.find.bind(Dom)
 
-
 // === TEST LIBRAIRIE ===
 // (retirer le code ci-dessous après avoir lancé une première fois Dom.ctest()
 //  pour vous assurer que la librairie était fonctionnelle.)
@@ -1052,7 +1051,7 @@ Dom.ctest = function(){
   raise(DOM.contains.bind(DOM),[el, "string", {after: elin}], "Types incompatibles dans DOM.contains : 'String' et 'DOMElement'…")
   not_raise(DOM.contains.bind(DOM),[el, "string", {after: /reg/i}])
 
-  
+
   stop_lib_testor()
 
 }
