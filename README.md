@@ -9,7 +9,7 @@ Librairie JavaScript pour simplifier l'utilisation du DOM, sans jQuery.
 Copier ce lien en dur dans le `<head>` de votre page HTML :
 
 ```
-<script src="https://cdn.jsdelivr.net/gh/PhilippePerret/dom.js@main/dom.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/PhilippePerret/DomJS@main/dom.js"></script>
 ```
 
 ### Chargement local
