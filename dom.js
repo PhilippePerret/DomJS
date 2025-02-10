@@ -760,13 +760,14 @@ window.DGetAll  = Dom.getAll.bind(Dom)
  */
 window.DFind    = Dom.find.bind(Dom)
 
+
 // === TEST LIBRAIRIE ===
 // (retirer le code ci-dessous après avoir lancé une première fois Dom.ctest()
 //  pour vous assurer que la librairie était fonctionnelle.)
 Dom.ctest = function(){
 
   if ( 'function' != typeof window.vide ) {
-    run_lib_testor(Dom)
+    return active_lib_testor(Dom)
   }
  
   // Pour ne jouer que les tests qui sont "marqués" (c'est-à-dire qui
