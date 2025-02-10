@@ -760,6 +760,14 @@ window.DGetAll  = Dom.getAll.bind(Dom)
  */
 window.DFind    = Dom.find.bind(Dom)
 
+/**
+ * Pour vérifier l'appartenance. Voir {@link Dom.contains}
+ * 
+ * @global
+ * @public
+ */
+window.DContains = Dom.contains.bind(Dom)
+
 
 // === TEST LIBRAIRIE ===
 // (retirer le code ci-dessous après avoir lancé une première fois Dom.ctest()
@@ -784,7 +792,19 @@ Dom.ctest = function(){
   `)
   assert(DGet('div#premier'), "DGet devrait retourner l'élément DOM demandé")
 
-  // --- TODO Création d'un élément à un endroit précis ---
+  t("--- new Dom() ---")
+  body(`
+    <div id="conteneur">
+      <div id="contenu">Ce div est contenu</div>
+    </div>
+  `)
+  conteneur = DGet('div#conteneur')
+  const o = new Dom('div', {in: "#conteneur"})
+  const obj = DCreate('DIV', {id: 'ajouted', text: "Le div ajouté"})
+  o.insertInContainer(obj)
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur…")
+  
+  // --- Création d'un élément à un endroit précis ---
   body(`
   <div id="conteneur-un"></div>
   <div id="conteneur-deux"></div>
