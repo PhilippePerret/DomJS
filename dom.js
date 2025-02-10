@@ -690,19 +690,19 @@ class Dom {
   insertInContainer(o){
     // console.log("-> insertInContainer / data = ", this.data)
     const d = this.data
-    const real_in      = ensureDomE(d.in)
+    const real_in      = ensureDomE(d.in, document.body)
     const real_after   = ensureDomE(d.after, null)
     const real_before  = ensureDomE(d.before, null)
-    if ( d.after || d.before ) {
-      const parent = real_in ? real_in : (real_after ? real_after : real_before).parentNode ;
+    if ( real_after || real_before ) {
+      const parent = d.in ? d.in : (real_after ? real_after : real_before).parentNode ;
       let oref = real_after ? real_after.nextSibling : real_before ;
-      if ( !oref && d.before ) {
-        // Cas particulier où on doit insérer AVANT un noeud
-        // qui n'existe pas : on met au tout début
-        // (pittfall? si after et before sont définis)
-        oref = parent.firstChild
-      }
       parent.insertBefore(o, oref)
+    } else if ( d.before ) {
+      // Cas particulier où on doit insérer AVANT un noeud
+      // qui n'existe pas (il aurait été traité par la condition
+      // précédente): on met au tout début
+      const parent = document.body
+      parent.insertBefore(o, parent.firstChild)
     } else {
       real_in.appendChild(o)
     }
@@ -799,11 +799,59 @@ Dom.ctest = function(){
     </div>
   `)
   conteneur = DGet('div#conteneur')
+  const contenu = DGet('div#conteneur div#contenu')
   const o = new Dom('div', {in: "#conteneur"})
   const obj = DCreate('DIV', {id: 'ajouted', text: "Le div ajouté"})
+  // En définissant :in avec un sélecteur
+  o.data = {in: "#conteneur"}
   o.insertInContainer(obj)
-  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur…")
-  
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur (:in défini par le sélecteur…")
+  obj.remove()
+  // En définissant :in avec un DOM Element
+  o.data = {in: conteneur}
+  o.insertInContainer(obj)
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur (:in défini par l'objet…")
+  obj.remove()
+  // En définissant :in avec un élément inconnu
+  o.data = {in: "div#inconnu-au-bataillon"}
+  o.insertInContainer(obj)
+  assert(!DContains(conteneur, obj), "L'objet ne devrait pas se trouver dans le conteneur (:in inconnu)…")
+  obj.remove()
+  // En définissant :after avec un sélecteur existant
+  o.data = {after: "div#contenu"}
+  o.insertInContainer(obj)
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur (:after défini par sélecteur…")
+  equal(obj.previousSibling, contenu, "L'objet devrait être après le div contenu… (quand :after est sélecteur")
+  obj.remove()
+  // En définissant :after avec un objet existant
+  o.data = {after: contenu}
+  o.insertInContainer(obj)
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur (:after défini par objet…")
+  equal(obj.previousSibling, contenu, "L'objet devrait être après le div contenu (quand :after est objet…")
+  obj.remove()
+  // En définissant :after avec un sélecteur inexistant
+  o.data = {after: "div#inconnu-au-bataillon"}
+  o.insertInContainer(obj)
+  assert(!DContains(conteneur, obj), "L'objet n'aurait pas dû être mis dans le conteneur (:after inconnu…")
+  obj.remove()
+  // En définissant :before avec un sélecteur existant
+  o.data = {before: "div#contenu"}
+  o.insertInContainer(obj)
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur (:before défini par sélecteur…")
+  equal(obj.nextSibling, contenu, "L'objet devrait être avant le div contenu… (quand :before est sélecteur")
+  obj.remove()
+  // En définissant :before avec un objet existant
+  o.data = {before: contenu}
+  o.insertInContainer(obj)
+  assert(DContains(conteneur, obj), "L'objet aurait dû être mis dans le conteneur (:before défini par objet…")
+  equal(obj.nextSibling, contenu, "L'objet devrait être avant le div contenu (quand :before est objet…")
+  obj.remove()
+  // En définissant :before avec un sélecteur inexistant
+  o.data = {before: "div#inconnu-au-bataillon"}
+  o.insertInContainer(obj)
+  assert(!DContains(conteneur, obj), "L'objet n'aurait pas dû être mis dans le conteneur (:before inconnu…")
+  obj.remove()
+
   // --- Création d'un élément à un endroit précis ---
   body(`
   <div id="conteneur-un"></div>
@@ -841,7 +889,6 @@ Dom.ctest = function(){
   DCreate('DIV', {id: "tout-en-haut", before: "div#inexistant", text: "Tout en haut"})
   node = DGet('div#tout-en-haut')
   equal(node.nextSibling, toutpremier, "Le div créé avant un noeud inexistant devrait être avant le tout premier")
-
 
   // --- DGetAll ---
   t("Récupération d'éléments avec DGetAll")
