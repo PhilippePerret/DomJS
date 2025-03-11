@@ -1,5 +1,8 @@
 'use strict';
 /**
+ * version: 1.1.0
+ * author: philippe.perret@yahoo.fr
+ * 
  * Utilitaire DOM pour JavaScript
  * 
  * TESTS
@@ -145,13 +148,16 @@ class Dom {
    * @param {Object} data.dataset Table des données à insérer.
    * @param {String} data.src La source de l'élément (script, image, etc.)
    * @param {String} data.href L'URL du lien (a, link, etc.)
+   * @param {String} data.for L'identifiant de l'élément lié au label (souvent une checkbox)
    * @param {Function} data.onload La méthode appelée en fin de chargement (img, script, etc.)
    * @param {Function} data.onerror La méthode à appeler en cas d'erreur (img, script, etc.)
    * @param {Function} data.onchange La méthode à appeler en cas de changement (input-text, textarea, etc.)
    * @param {Function} data.onblur La méthode à appeler au blur
-   * @param {(Selector|DOMElement)} data.in Le conteneur (parent) du noeud. Si précisé, on mettre le nœud directement dedans.
-   * @param {(Selector|DOMElement)} data.after L'élément après lequel mettre le nœud. S'il n'y a aucune ambigüité, data.in n'est pas nécessaire.
-   * @param {(Selector|DOMElement)} data.before L'élément avant lequel mettre le nœud. S'il n'y a aucune ambigüité, data.in n'est pas nécessaire.
+   * @param {Selector|DOMElement} data.in Le conteneur (parent) du noeud. Si précisé, on mettre le nœud directement dedans.
+   * @param {Selector|DOMElement} data.after L'élément après lequel mettre le nœud. S'il n'y a aucune ambigüité, data.in n'est pas nécessaire.
+   * @param {Selector|DOMElement} data.before L'élément avant lequel mettre le nœud. S'il n'y a aucune ambigüité, data.in n'est pas nécessaire.
+   * @param {String} data.placeholder Le placeholder pour l'élément
+   * @param {String} data.title Le titre pour l'élément (apparaissant au survol de la souris)
    */
   static create(tag, data){
     const dom = new Dom(tag, data)
@@ -663,7 +669,7 @@ class Dom {
       o.className = d.class.join(" ")
     }
     ;[
-      'style', 'type', 'placeholder'
+      'style', 'type', 'placeholder','title','for'
     ].forEach(prop => {
       d[prop] && o.setAttribute(prop, d[prop])
     })
